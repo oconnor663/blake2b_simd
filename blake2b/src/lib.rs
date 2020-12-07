@@ -619,14 +619,16 @@ fn bytes_to_hex(bytes: &[u8]) -> HexString {
 /// This implementation is constant time, if the two hashes are the same length.
 impl PartialEq for Hash {
     fn eq(&self, other: &Hash) -> bool {
-        constant_time_eq::constant_time_eq(&self.as_bytes(), &other.as_bytes())
+        use subtle::ConstantTimeEq;
+        self.as_bytes().ct_eq(other.as_bytes()).into()
     }
 }
 
 /// This implementation is constant time, if the slice is the same length as the hash.
 impl PartialEq<[u8]> for Hash {
     fn eq(&self, other: &[u8]) -> bool {
-        constant_time_eq::constant_time_eq(&self.as_bytes(), other)
+        use subtle::ConstantTimeEq;
+        self.as_bytes().ct_eq(other).into()
     }
 }
 
