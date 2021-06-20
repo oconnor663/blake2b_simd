@@ -41,14 +41,14 @@ fn with_random_inputs_blake2b(mut f: impl FnMut(&[blake2b_simd::Params], &[&[u8]
         // Select a random number of random length input slices from the
         // buffers.
         let num_inputs: usize = rng.gen_range(0, BLAKE2B_MAX_N + 1);
-        let mut inputs = ArrayVec::<[&[u8]; BLAKE2B_MAX_N]>::new();
+        let mut inputs = ArrayVec::<&[u8], BLAKE2B_MAX_N>::new();
         for i in 0..num_inputs {
             let input_length = rng.gen_range(0, BLAKE2B_MAX_LEN + 1);
             inputs.push(&input_bufs[i][..input_length]);
         }
 
         // For each input slice, create a random Params object.
-        let mut params = ArrayVec::<[blake2b_simd::Params; BLAKE2B_MAX_N]>::new();
+        let mut params = ArrayVec::<blake2b_simd::Params, BLAKE2B_MAX_N>::new();
         for _ in 0..num_inputs {
             params.push(random_params_blake2b(&mut rng));
         }
@@ -61,14 +61,14 @@ fn with_random_inputs_blake2b(mut f: impl FnMut(&[blake2b_simd::Params], &[&[u8]
 fn fuzz_blake2b_hash_many() {
     with_random_inputs_blake2b(|params, inputs| {
         // Compute the hash of each input independently.
-        let mut expected = ArrayVec::<[blake2b_simd::Hash; BLAKE2B_MAX_N]>::new();
+        let mut expected = ArrayVec::<blake2b_simd::Hash, BLAKE2B_MAX_N>::new();
         for (param, input) in params.iter().zip(inputs.iter()) {
             expected.push(param.hash(input));
         }
 
         // Now compute the same hashes in a batch, and check that this gives
         // the same result.
-        let mut jobs: ArrayVec<[blake2b_simd::many::HashManyJob; BLAKE2B_MAX_N]> = inputs
+        let mut jobs: ArrayVec<blake2b_simd::many::HashManyJob, BLAKE2B_MAX_N> = inputs
             .iter()
             .zip(params.iter())
             .map(|(input, param)| blake2b_simd::many::HashManyJob::new(param, input))
@@ -85,7 +85,7 @@ fn fuzz_blake2b_update_many() {
     with_random_inputs_blake2b(|params, inputs| {
         // Compute the hash of each input independently. Feed each into the
         // state twice, to exercise buffering.
-        let mut expected = ArrayVec::<[blake2b_simd::Hash; BLAKE2B_MAX_N]>::new();
+        let mut expected = ArrayVec::<blake2b_simd::Hash, BLAKE2B_MAX_N>::new();
         for (param, input) in params.iter().zip(inputs.iter()) {
             let mut state = param.to_state();
             state.update(input);
@@ -95,7 +95,7 @@ fn fuzz_blake2b_update_many() {
 
         // Now compute the same hashes in a batch, and check that this gives
         // the same result.
-        let mut states = ArrayVec::<[blake2b_simd::State; BLAKE2B_MAX_N]>::new();
+        let mut states = ArrayVec::<blake2b_simd::State, BLAKE2B_MAX_N>::new();
         for param in params {
             states.push(param.to_state());
         }
@@ -140,14 +140,14 @@ fn with_random_inputs_blake2s(mut f: impl FnMut(&[blake2s_simd::Params], &[&[u8]
         // Select a random number of random length input slices from the
         // buffers.
         let num_inputs: usize = rng.gen_range(0, BLAKE2S_MAX_N + 1);
-        let mut inputs = ArrayVec::<[&[u8]; BLAKE2S_MAX_N]>::new();
+        let mut inputs = ArrayVec::<&[u8], BLAKE2S_MAX_N>::new();
         for i in 0..num_inputs {
             let input_length = rng.gen_range(0, BLAKE2S_MAX_LEN + 1);
             inputs.push(&input_bufs[i][..input_length]);
         }
 
         // For each input slice, create a random Params object.
-        let mut params = ArrayVec::<[blake2s_simd::Params; BLAKE2S_MAX_N]>::new();
+        let mut params = ArrayVec::<blake2s_simd::Params, BLAKE2S_MAX_N>::new();
         for _ in 0..num_inputs {
             params.push(random_params_blake2s(&mut rng));
         }
@@ -160,14 +160,14 @@ fn with_random_inputs_blake2s(mut f: impl FnMut(&[blake2s_simd::Params], &[&[u8]
 fn fuzz_blake2s_hash_many() {
     with_random_inputs_blake2s(|params, inputs| {
         // Compute the hash of each input independently.
-        let mut expected = ArrayVec::<[blake2s_simd::Hash; BLAKE2S_MAX_N]>::new();
+        let mut expected = ArrayVec::<blake2s_simd::Hash, BLAKE2S_MAX_N>::new();
         for (param, input) in params.iter().zip(inputs.iter()) {
             expected.push(param.hash(input));
         }
 
         // Now compute the same hashes in a batch, and check that this gives
         // the same result.
-        let mut jobs: ArrayVec<[blake2s_simd::many::HashManyJob; BLAKE2S_MAX_N]> = inputs
+        let mut jobs: ArrayVec<blake2s_simd::many::HashManyJob, BLAKE2S_MAX_N> = inputs
             .iter()
             .zip(params.iter())
             .map(|(input, param)| blake2s_simd::many::HashManyJob::new(param, input))
@@ -184,7 +184,7 @@ fn fuzz_blake2s_update_many() {
     with_random_inputs_blake2s(|params, inputs| {
         // Compute the hash of each input independently. Feed each into the
         // state twice, to exercise buffering.
-        let mut expected = ArrayVec::<[blake2s_simd::Hash; BLAKE2S_MAX_N]>::new();
+        let mut expected = ArrayVec::<blake2s_simd::Hash, BLAKE2S_MAX_N>::new();
         for (param, input) in params.iter().zip(inputs.iter()) {
             let mut state = param.to_state();
             state.update(input);
@@ -194,7 +194,7 @@ fn fuzz_blake2s_update_many() {
 
         // Now compute the same hashes in a batch, and check that this gives
         // the same result.
-        let mut states = ArrayVec::<[blake2s_simd::State; BLAKE2S_MAX_N]>::new();
+        let mut states = ArrayVec::<blake2s_simd::State, BLAKE2S_MAX_N>::new();
         for param in params {
             states.push(param.to_state());
         }

@@ -488,7 +488,7 @@ pub(crate) mod test {
     // support of the real implementation. We need this because the official test vectors don't
     // include any inputs large enough to exercise all the branches in the buffering logic.
     fn blake2bp_reference(input: &[u8]) -> Hash {
-        let mut leaves = arrayvec::ArrayVec::<[_; DEGREE]>::new();
+        let mut leaves = arrayvec::ArrayVec::<_, DEGREE>::new();
         for leaf_index in 0..DEGREE {
             leaves.push(
                 crate::Params::new()

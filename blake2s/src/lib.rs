@@ -566,7 +566,7 @@ impl Default for State {
     }
 }
 
-type HexString = arrayvec::ArrayString<[u8; 2 * OUTBYTES]>;
+type HexString = arrayvec::ArrayString<{ 2 * OUTBYTES }>;
 
 /// A finalized BLAKE2 hash, with constant-time equality.
 #[derive(Clone, Copy)]
@@ -592,7 +592,7 @@ impl Hash {
     }
 
     /// Convert the hash to a lowercase hexadecimal
-    /// [`ArrayString`](https://docs.rs/arrayvec/0.4/arrayvec/struct.ArrayString.html).
+    /// [`ArrayString`](https://docs.rs/arrayvec/0.7/arrayvec/struct.ArrayString.html).
     pub fn to_hex(&self) -> HexString {
         bytes_to_hex(self.as_bytes())
     }

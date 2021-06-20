@@ -21,7 +21,7 @@ default = ["std"]
 std = ["blake2b_simd/std", "blake2s_simd/std"]
 
 [dependencies]
-arrayvec = "0.5.0"
+arrayvec = "0.7.0"
 blake2b_simd = { path = "./blake2b", default-features = false }
 blake2s_simd = { path = "./blake2s", default-features = false }
 blake2-avx2-sneves = { path = "benches/blake2-avx2-sneves", optional = true }

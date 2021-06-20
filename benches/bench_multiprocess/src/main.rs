@@ -103,7 +103,7 @@ fn blake2s_hash() -> u128 {
 //     }
 //     let params = blake2b_simd::Params::new();
 //     bench(|| {
-//         let mut jobs = arrayvec::ArrayVec::<[_; blake2b_simd::many::MAX_DEGREE]>::new();
+//         let mut jobs = arrayvec::ArrayVec::<_, { blake2b_simd::many::MAX_DEGREE }>::new();
 //         for input in &mut inputs {
 //             let job = blake2b_simd::many::HashManyJob::new(&params, input.get());
 //             jobs.push(job);
@@ -129,7 +129,7 @@ fn blake2b_hash_many() -> u128 {
     }
     let params = blake2b_simd::Params::new();
     bench(|| {
-        let mut jobs = arrayvec::ArrayVec::<[_; blake2b_simd::many::MAX_DEGREE]>::new();
+        let mut jobs = arrayvec::ArrayVec::<_, { blake2b_simd::many::MAX_DEGREE }>::new();
         for input in &mut inputs {
             let job = blake2b_simd::many::HashManyJob::new(&params, input.get());
             jobs.push(job);
@@ -149,7 +149,7 @@ fn blake2s_hash_many() -> u128 {
     }
     let params = blake2s_simd::Params::new();
     bench(|| {
-        let mut jobs = arrayvec::ArrayVec::<[_; blake2s_simd::many::MAX_DEGREE]>::new();
+        let mut jobs = arrayvec::ArrayVec::<_, { blake2s_simd::many::MAX_DEGREE }>::new();
         for input in &mut inputs {
             let job = blake2s_simd::many::HashManyJob::new(&params, input.get());
             jobs.push(job);

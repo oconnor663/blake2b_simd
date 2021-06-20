@@ -441,13 +441,13 @@ mod test {
 
         let mut input_buffer = [0; 100 * BLOCKBYTES];
         paint_test_input(&mut input_buffer);
-        let mut inputs = ArrayVec::<[_; N]>::new();
+        let mut inputs = ArrayVec::<_, N>::new();
         for i in 0..N {
             inputs.push(&input_buffer[i..]);
         }
 
         exercise_cases(|stride, length, last_node, finalize, count| {
-            let mut reference_words = ArrayVec::<[_; N]>::new();
+            let mut reference_words = ArrayVec::<_, N>::new();
             for i in 0..N {
                 let words = reference_compression(
                     &inputs[i][..length],
@@ -460,11 +460,11 @@ mod test {
                 reference_words.push(words);
             }
 
-            let mut test_words = ArrayVec::<[_; N]>::new();
+            let mut test_words = ArrayVec::<_, N>::new();
             for i in 0..N {
                 test_words.push(initial_test_words(i));
             }
-            let mut jobs = ArrayVec::<[_; N]>::new();
+            let mut jobs = ArrayVec::<_, N>::new();
             for (i, words) in test_words.iter_mut().enumerate() {
                 jobs.push(Job {
                     input: &inputs[i][..length],
@@ -506,13 +506,13 @@ mod test {
 
         let mut input_buffer = [0; 100 * BLOCKBYTES];
         paint_test_input(&mut input_buffer);
-        let mut inputs = ArrayVec::<[_; N]>::new();
+        let mut inputs = ArrayVec::<_, N>::new();
         for i in 0..N {
             inputs.push(&input_buffer[i..]);
         }
 
         exercise_cases(|stride, length, last_node, finalize, count| {
-            let mut reference_words = ArrayVec::<[_; N]>::new();
+            let mut reference_words = ArrayVec::<_, N>::new();
             for i in 0..N {
                 let words = reference_compression(
                     &inputs[i][..length],
@@ -525,11 +525,11 @@ mod test {
                 reference_words.push(words);
             }
 
-            let mut test_words = ArrayVec::<[_; N]>::new();
+            let mut test_words = ArrayVec::<_, N>::new();
             for i in 0..N {
                 test_words.push(initial_test_words(i));
             }
-            let mut jobs = ArrayVec::<[_; N]>::new();
+            let mut jobs = ArrayVec::<_, N>::new();
             for (i, words) in test_words.iter_mut().enumerate() {
                 jobs.push(Job {
                     input: &inputs[i][..length],

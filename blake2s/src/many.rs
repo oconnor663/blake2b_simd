@@ -93,7 +93,7 @@ pub fn degree() -> usize {
     guts::Implementation::detect().degree()
 }
 
-type JobsVec<'a, 'b> = ArrayVec<[Job<'a, 'b>; guts::MAX_DEGREE]>;
+type JobsVec<'a, 'b> = ArrayVec<Job<'a, 'b>, { guts::MAX_DEGREE }>;
 
 #[inline(always)]
 fn fill_jobs_vec<'a, 'b>(
@@ -453,7 +453,7 @@ mod test {
                 inputs[i] = &input[..chunks * BLOCKBYTES];
             }
 
-            let mut params: ArrayVec<[Params; LEN]> = ArrayVec::new();
+            let mut params: ArrayVec<Params, LEN> = ArrayVec::new();
             for i in 0..LEN {
                 let mut p = Params::new();
                 p.node_offset(i as u64);
@@ -464,7 +464,7 @@ mod test {
                 params.push(p);
             }
 
-            let mut jobs: ArrayVec<[HashManyJob; LEN]> = ArrayVec::new();
+            let mut jobs: ArrayVec<HashManyJob, LEN> = ArrayVec::new();
             for i in 0..LEN {
                 jobs.push(HashManyJob::new(&params[i], inputs[i]));
             }
@@ -495,7 +495,7 @@ mod test {
                 inputs[i] = &input[..chunks * BLOCKBYTES];
             }
 
-            let mut params: ArrayVec<[Params; LEN]> = ArrayVec::new();
+            let mut params: ArrayVec<Params, LEN> = ArrayVec::new();
             for i in 0..LEN {
                 let mut p = Params::new();
                 p.node_offset(i as u64);
@@ -506,7 +506,7 @@ mod test {
                 params.push(p);
             }
 
-            let mut states: ArrayVec<[State; LEN]> = ArrayVec::new();
+            let mut states: ArrayVec<State, LEN> = ArrayVec::new();
             for i in 0..LEN {
                 states.push(params[i].to_state());
             }
